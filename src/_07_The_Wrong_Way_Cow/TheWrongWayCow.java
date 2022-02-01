@@ -48,12 +48,69 @@
 
 package _07_The_Wrong_Way_Cow;
 
+import java.util.HashMap;
+
 public class TheWrongWayCow {
 
-    public static int[] findWrongWayCow(final char[][] field) {
-        // Fill in the code to return the [col, row] coordinate position of the
-        // head (letter 'c') of the wrong way cow!
-        
-        return null;
-    }
+	public static int[] findWrongWayCow(final char[][] field) {
+		// Fill in the code to return the [col, row] coordinate position of the
+		// head (letter 'c') of the wrong way cow!
+		int northCnt = 0;
+		int southCnt = 0;
+		int westCnt = 0;
+		int eastCnt = 0;
+
+		HashMap<String, int[]> hm = new HashMap<String, int[]>(4);
+		for (int i = 0; i < field.length; i++) {
+			for (int j = 0; j < field[i].length; j++) {
+				if (hm.size() > 1 && northCnt + westCnt + southCnt + eastCnt > 2) {
+					i = field.length;
+					break;
+				}
+				if (field[i][j] == 'c') {
+					if (northCnt < 2) {
+						if (i + 2 < field.length && field[i + 1][j] == 'o' && field[i + 2][j] == 'w') {
+							hm.put("North", new int[] { j, i });
+							northCnt += 1;
+							continue;
+						}
+					}
+					if (southCnt < 2) {
+						if (i - 2 >= 0 && field[i - 1][j] == 'o' && field[i - 2][j] == 'w') {
+							hm.put("South", new int[] { j, i });
+							southCnt += 1;
+							continue;
+						}
+					}
+					if (westCnt < 2) {
+						if (j - 2 >= 0 && field[i][j - 1] == 'o' && field[i][j - 2] == 'w') {
+							hm.put("West", new int[] { j, i });
+							westCnt += 1;
+							continue;
+						}
+					}
+					if (eastCnt < 2) {
+						if (j + 2 < field[i].length && field[i][j + 1] == 'o' && field[i][j + 2] == 'w') {
+							hm.put("East", new int[] { j, i });
+							eastCnt += 1;
+							continue;
+						}
+					}
+				}
+			}
+		}
+		if (northCnt == 1) {
+			return hm.get("North");
+		}
+		if (southCnt == 1) {
+			return hm.get("South");
+		}
+		if (westCnt == 1) {
+			return hm.get("West");
+		}
+		if (eastCnt == 1) {
+			return hm.get("East");
+		}
+		return null;
+	}
 }
