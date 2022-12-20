@@ -8,7 +8,35 @@ import org.jointheleague.graphical.robot.Robot;
 
 public class _02_RobotRace {
     // 1. make a main method
-
+	public static void main (String [] args) {
+		Robot[] robots = new Robot[5];
+		Random ran = new Random();
+		for (int i = 0; i < robots.length; i++) {
+			robots[i] = new Robot(i*10, 650);
+			robots[i].setSpeed(10);
+		}
+		Thread one = new Thread(() -> robots[0].move(ran.nextInt(50)));
+		Thread two = new Thread(() -> robots[1].move(ran.nextInt(50)));
+		Thread three = new Thread(() -> robots[2].move(ran.nextInt(50)));
+		Thread four = new Thread(() -> robots[3].move(ran.nextInt(50)));
+		Thread five = new Thread(() -> robots[4].move(ran.nextInt(50)));
+		boolean notDone = true;
+		while (notDone) {	
+			one.start();
+			two.start();
+			three.start();
+			four.start();
+			five.start();
+			for (int i = 0; i < robots.length; i++) {
+				if (robots[i].getY() < 10) {
+					notDone = false;
+					JOptionPane.showMessageDialog(null, "Robot " + i +" wins!");
+					break;
+				}
+			}
+			
+		}
+	} 
         // 2. create an array of 5 robots.
 
         // 3. use a for loop to initialize the robots.
